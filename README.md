@@ -54,7 +54,7 @@ Contacts List              |  Contact Details
 
 
 > [!IMPORTANT]
-> In the `UserSeeder.php file` you will find the system's 'Super Admin' user to start using, but if you prefer you can just register a new user. (_New users are registered with the 'Admin'_ profile).
+> In the `UserSeeder.php file` you will find the system's 'Super Admin' user to start using, but if you prefer you can just register a new user.
 
 ## License
 
