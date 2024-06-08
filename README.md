@@ -49,7 +49,7 @@ php artisan migrate:fresh --seed
 ## Examples
 Contacts List              |  Contact Details
 :-------------------------:|:-------------------------:
-![Contact list image.](/public/assets/images/readme_1.jpg)   |  ![Contact details page..](/public/assets/images/readme_2.jpg)
+![Contact list image.](public/assets/images/readme_1.jpg)   |  ![Contact details page..](public/assets/images/readme_2.jpg)
 
 
 
