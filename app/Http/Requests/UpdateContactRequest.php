@@ -28,7 +28,7 @@ class UpdateContactRequest extends FormRequest
             'telephone' => ['required', 'string', Rule::unique('contacts')->ignore($id),'min:11', 'max:11'],
             'email' => ['required', 'email', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
-            'image' => ['image','nullable']
+            'image' => ['nullable','image', 'max:20480']
         ];
     }
 }

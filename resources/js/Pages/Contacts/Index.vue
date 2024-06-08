@@ -1,12 +1,11 @@
 <script setup>
 import { ref } from 'vue';
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, useForm } from "@inertiajs/vue3";
 
 import Contact from './Contact.vue';
 import Modal from '../../Components/Modal.vue';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import InputError from "@/Components/InputError.vue";
-import { MagnifyingGlassIcon } from '@heroicons/vue/24/solid';
 import { UserPlusIcon } from '@heroicons/vue/24/outline';
 
 const props = defineProps({
@@ -33,7 +32,7 @@ const deleteContact = (id) => {
     }
 };
 
-const isModalVisible = ref(props.isModalVisible);
+const isModalVisible = ref(false);
 
 const openModal = () => {
     isModalVisible.value = true;
@@ -54,6 +53,9 @@ const handleImageUpload = (e) => {
 const submit = () => {
     formData.post(route("contacts.store"), {
         preserveScroll: true,
+        onSuccess: () => {
+            closeModal();
+        },
     });
 };
 </script>
@@ -61,18 +63,15 @@ const submit = () => {
 <template>
     <Head title="Contatos" />
     <AuthenticatedLayout>
-        <div class="flex p-6 items-center min-h-[92svh] w-3/5 overflow-auto mx-auto">
-            <div id="contact-list" class="sm:max-md:max-w-3xl lg:min-h-[400px] max-h-[80svh] w-full bg-white rounded-lg shadow-lg overflow-y-scroll">
-                <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="flex p-6 items-center min-h-[92svh] md:w-4/5 sm:w-full overflow-auto mx-auto">
+            <div id="contact-list" class="sm:max-md:max-w-full lg:min-h-[400px] max-h-[80svh] w-full bg-white rounded-lg shadow-lg overflow-y-scroll">
+                <div class="sticky top-0 p-4 bg-white border-b-4 border-sky-200 flex items-center justify-between">
                     <div>
-                        <h1 class="text-2xl font-semibold">Lista de Contatos</h1>
-                        <p class="text-xs font-extrabold">{{ props.contacts.length }} {{ (props.contacts.length > 1 ? 'contatos' : 'contato') }}</p>
+                        <h1 class=" text-lg md:text-2xl font-semibold">Lista de Contatos</h1>
+                        <p class="text-xs font-extrabold text-gray-400">{{ props.contacts.length }} {{ (props.contacts.length > 1 ? 'contatos' : 'contato') }}</p>
                     </div>
                     <div>
-                        <UserPlusIcon class="inline-block h-7 w-8 mr-2 text-gray-500 cursor-pointer" @click="openModal"/>
-                        <!-- <input type="text" placeholder="Search"
-                            class="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"> relative -top-[2.25px] right-8 -->
-                        <MagnifyingGlassIcon class="inline-block h-7 w-8 text-gray-500 cursor-pointer" />
+                        <UserPlusIcon class="inline-block h-7 w-8 text-gray-500 cursor-pointer" @click="openModal"/>
                     </div>
                 </div>
                 <div class="divide-y divide-gray-200">
@@ -130,6 +129,9 @@ const submit = () => {
                             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                                 Adicionar
                             </button>
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline float-right" type="button" @click="closeModal">
+                                Fechar
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -141,6 +143,7 @@ const submit = () => {
 <style scoped>
 #contact-list::-webkit-scrollbar {
     width: 8px;
+    z-index: 1;
 }
 
 #contact-list::-webkit-scrollbar-track {

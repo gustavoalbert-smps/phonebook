@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreContactRequest;
+use App\Http\Requests\UpdateContactRequest;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,11 +14,8 @@ class ContactController extends Controller
     {
         $contacts = Contact::orderBy('name')->get();
 
-        $isModalVisible = session()->pull('isModalVisible', false);
-
         return inertia('Contacts/Index', [
-            'contacts' => $contacts,
-            'isModalVisible' => $isModalVisible,
+            'contacts' => $contacts
         ]);
     }
 
@@ -25,11 +23,8 @@ class ContactController extends Controller
     {
         $contact = Contact::findOrFail($id);
 
-        $isModalVisible = session()->pull('isModalVisible', false);
-
         return inertia('Contacts/Show', [
-            'contact' => $contact,
-            'isModalVisible' => $isModalVisible,
+            'contact' => $contact
         ]);
     }
 
@@ -39,7 +34,8 @@ class ContactController extends Controller
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $file =  $request->file('image');
-            $path = "public/images/{$fields['telephone']}.{$file->getClientOriginalExtension()}";
+            $name = md5(uniqid($fields['telephone'],true)) . '.' . $file->getClientOriginalExtension();
+            $path = "public/images/{$name}";
             $content = file_get_contents($file);
 
             $uploaded = Storage::disk('s3')->put($path, $content);
@@ -52,17 +48,18 @@ class ContactController extends Controller
 
         Contact::create($fields);
 
-        return redirect()->route('contacts.index')->with('isModalVisible', false);
+        return redirect()->route('contacts.index');
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateContactRequest $request, $id)
     {
         $fields = $request->validated();
         $contact = Contact::findOrFail($id);
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $file =  $request->file('image');
-            $path = "public/images/{$fields['telephone']}.{$file->getClientOriginalExtension()}";
+            $name = md5(uniqid($fields['telephone'],true)) . '.' . $file->getClientOriginalExtension();
+            $path = "public/images/{$name}";
             $content = file_get_contents($file);
 
             $uploaded = Storage::disk('s3')->put($path, $content);
@@ -73,11 +70,13 @@ class ContactController extends Controller
             } else {
                 $fields['image'] = $contact->image;
             }
+        } else {
+            unset($fields['image']);
         }
 
         $contact->update($fields);
 
-        return redirect()->back()->with('isModalVisible', false);
+        return redirect()->back();
     }
 
     public function destroy(int $id)
@@ -91,7 +90,7 @@ class ContactController extends Controller
         return redirect()->route('contacts.index');
     }
 
-    public function validateImage(string $url) 
+    public function validateImage($url) 
     {
         if (!empty($url) && strpos($url, 'public/images') !== false) {
             $parsedUrl = parse_url($url);
