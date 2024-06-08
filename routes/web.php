@@ -39,11 +39,4 @@ Route::middleware('auth')->group(function () {
     Route::resource('contacts', ContactController::class);
 });
 
-Route::get('/run-migration', function () {
-    Artisan::call('optimize:clear');
-    Artisan::call('migrate:fresh --seed');
-
-    return "Migrações executadas com sucesso";
-});
-
 require __DIR__.'/auth.php';
