@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -13,6 +13,8 @@ const props = defineProps({
     },
 });
 
+const imageLoaded = ref(false);
+
 const handleDelete = () => {
     props.deleteContact(props.contact.id);
 };
@@ -20,12 +22,17 @@ const handleDelete = () => {
 const showContact = () => {
     router.get(route('contacts.show', props.contact.id));
 };
+
+const handleImageLoad = () => {
+    imageLoaded.value = true;
+};
 </script>
 
 <template>
     <div class="flex items-center p-4 border-b border-gray-200">
         <img :src="contact.image ? contact.image : 'https://phonebook-files.s3.sa-east-1.amazonaws.com/default-avatar.svg'"
-            alt="contact image" class="max-w-12 w-12 h-12 rounded-full mr-4 cursor-pointer" @click="showContact">
+            alt="contact image" class="max-w-12 w-12 h-12 rounded-full mr-4 cursor-pointer" 
+            :class="{'bg-gray-300 animate-pulse': !imageLoaded}" @click="showContact" @load="handleImageLoad">
         <div class="flex-1 cursor-pointer" @click="showContact">
             <p class="text-sm md:text-lg font-semibold line-clamp-1">{{ contact.name }}</p>
         </div>
