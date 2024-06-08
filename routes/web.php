@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -36,6 +37,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('contacts', ContactController::class);
+});
+
+Route::get('/run-migration', function () {
+    Artisan::call('optimize:clear');
+    Artisan::call('migrate:fresh --seed');
+
+    return "Migrações executadas com sucesso";
 });
 
 require __DIR__.'/auth.php';
