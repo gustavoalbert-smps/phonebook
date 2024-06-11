@@ -27,6 +27,10 @@ const isModalVisible = ref(false);
 
 const openModal = () => {
     isModalVisible.value = true;
+    formData.name = props.contact.name,
+    formData.email = props.contact.email,
+    formData.telephone = props.contact.telephone,
+    formData.image = null,
 };
 
 const closeModal = () => {

@@ -40,6 +40,10 @@ const openModal = () => {
 
 const closeModal = () => {
     isModalVisible.value = false;
+    formData.image = null;
+    formData.email = null;
+    formData.telephone = null;
+    formData.name = null;
 };
 
 const handleTelephoneInput = (e) => {
