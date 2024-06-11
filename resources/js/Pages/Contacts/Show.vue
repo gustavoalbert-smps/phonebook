@@ -74,7 +74,7 @@ const deleteContact = (id) => {
                 <div class="p-4 text-center mb-16">
                     <div class="relative">
                         <img :src="contact.image ? contact.image : 'https://phonebook-files.s3.sa-east-1.amazonaws.com/default-avatar.svg'" alt="Profile" 
-                        class="w-36 h-36 md:w-56 md:h-56 rounded-full mx-auto" :class="{'bg-gray-300 animate-pulse': !imageLoaded}" 
+                        class="w-36 h-36 md:w-56 md:h-56 rounded-full mx-auto" :class="{'bg-gray-400 animate-pulse': !imageLoaded}" 
                         @load="handleImageLoad"/>
                     </div>
                     <h2 class=" min-[320px]:max-[404px]:mt-[10%] min-[404px]:max-[576px]:mt-[15%] md:mt-20 text-white text-4xl md:text-6xl">{{ contact.name }}</h2>

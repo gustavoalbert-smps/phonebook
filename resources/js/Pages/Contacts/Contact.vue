@@ -32,7 +32,7 @@ const handleImageLoad = () => {
     <div class="flex items-center p-4 border-b border-gray-200">
         <img :src="contact.image ? contact.image : 'https://phonebook-files.s3.sa-east-1.amazonaws.com/default-avatar.svg'"
             alt="contact image" class="max-w-12 w-12 h-12 rounded-full mr-4 cursor-pointer" 
-            :class="{'bg-gray-300 animate-pulse': !imageLoaded}" @click="showContact" @load="handleImageLoad">
+            :class="{'bg-gray-400 animate-pulse': !imageLoaded}" @click="showContact" @load="handleImageLoad">
         <div class="flex-1 cursor-pointer" @click="showContact">
             <p class="text-sm md:text-lg font-semibold line-clamp-1">{{ contact.name }}</p>
         </div>
